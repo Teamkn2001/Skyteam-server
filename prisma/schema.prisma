@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Booking {
   id          Int       @id @default(autoincrement())
   email       String    @unique
   username    String
@@ -21,21 +21,29 @@ model User {
   lineId      String?
   bookingDate DateTime?
   createdAt   DateTime  @default(now())
-  Item        Item[]
+  itemId      Int
+  item        Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-  @@map("user")
+  @@map("booking")
 }
 
 model Item {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
-  price       Int
-  description String?
   image       String
-  userId      Int
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location    String?
+  lat         Float?
+  lng         Float?
+  price       Int
+  size        String?
+  bedroom     Int?
+  bathroom    Int?
+  garden      Boolean?
+  parking     Boolean?
+  description String?
+  createdAt DateTime  @default(now())
 
-  createdAt DateTime @default(now())
+  Bookings   Booking[]
 
   @@map("item")
 }

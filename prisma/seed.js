@@ -1,13 +1,176 @@
-const prisma = require('../config/prisma')
+const prisma = require("../src/config/prisma");
 
-const ItemData = [
-    {name: "Castlela", price: 5000000, description: "A castle in the land", image: "https://images.unsplash.com/photo-1564053489233-6e4438e1d4f0"},
-    {name: "Castlela", price: 5000000, description: "A castle in the land", image: "https://images.unsplash.com/photo-1564053489233-6e4438e1d4f0"},
-    {name: "Castlela", price: 5000000, description: "A castle in the land", image: "https://images.unsplash.com/photo-1564053489233-6e4438e1d4f0"},
-]
+const mockHouseData = [
+  {
+    name: "Box House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/box+house.jpg",
+    location: "New York, USA",
+    lat: 40.7128,
+    lng: -74.006,
+    price: 150000,
+    size: "120 sqm",
+    bedroom: 3,
+    bathroom: 2,
+    garden: true,
+    parking: true,
+    description:
+      "A modern box-style house with minimal design and cozy interiors.",
+  },
+  {
+    name: "Box House-2",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/box+house+2.jpg",
+    location: "Los Angeles, USA",
+    lat: 34.0522,
+    lng: -118.2437,
+    price: 175000,
+    size: "140 sqm",
+    bedroom: 4,
+    bathroom: 3,
+    garden: true,
+    parking: true,
+    description:
+      "A spacious box house with a rooftop garden and contemporary interiors.",
+  },
+  {
+    name: "Castle Dawn",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/castle+2.jpg",
+    location: "Edinburgh, UK",
+    lat: 55.9533,
+    lng: -3.1883,
+    price: 750000,
+    size: "500 sqm",
+    bedroom: 8,
+    bathroom: 6,
+    garden: true,
+    parking: true,
+    description:
+      "A historic castle with medieval architecture and breathtaking views.",
+  },
+  {
+    name: "Wild Cottage",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/cottage.jpg",
+    location: "Cornwall, UK",
+    lat: 50.266,
+    lng: -5.0527,
+    price: 200000,
+    size: "100 sqm",
+    bedroom: 2,
+    bathroom: 1,
+    garden: true,
+    parking: false,
+    description:
+      "A charming countryside cottage surrounded by nature and serenity.",
+  },
+  {
+    name: "Japan Castle",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/japan+castle.jpg",
+    location: "Kyoto, Japan",
+    lat: 35.0116,
+    lng: 135.7681,
+    price: 1200000,
+    size: "600 sqm",
+    bedroom: 10,
+    bathroom: 8,
+    garden: true,
+    parking: true,
+    description:
+      "A traditional Japanese castle with rich history and beautiful gardens.",
+  },
+  {
+    name: "Greeny House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/greeny+house.jpg",
+    location: "Vancouver, Canada",
+    lat: 49.2827,
+    lng: -123.1207,
+    price: 300000,
+    size: "150 sqm",
+    bedroom: 3,
+    bathroom: 2,
+    garden: true,
+    parking: true,
+    description: "A beautiful eco-friendly house surrounded by lush greenery.",
+  },
+  {
+    name: "Stone House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/stone+house.jpg",
+    location: "Dublin, Ireland",
+    lat: 53.3498,
+    lng: -6.2603,
+    price: 400000,
+    size: "160 sqm",
+    bedroom: 4,
+    bathroom: 3,
+    garden: true,
+    parking: true,
+    description: "A strong and rustic stone house with a timeless design.",
+  },
+  {
+    name: "Carson House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/carson+house.jpg",
+    location: "Seattle, USA",
+    lat: 47.6062,
+    lng: -122.3321,
+    price: 500000,
+    size: "200 sqm",
+    bedroom: 5,
+    bathroom: 4,
+    garden: true,
+    parking: true,
+    description:
+      "A modern and spacious house with a scenic view of the city skyline.",
+  },
+  {
+    name: "Hobbit House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/hobbit+house.jpg",
+    location: "Matamata, New Zealand",
+    lat: -37.8106,
+    lng: 175.7767,
+    price: 275000,
+    size: "90 sqm",
+    bedroom: 2,
+    bathroom: 1,
+    garden: true,
+    parking: false,
+    description:
+      "A cozy hobbit-style house built into the hills, perfect for nature lovers.",
+  },
+  {
+    name: "Catholian House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/catholian+house.jpg",
+    location: "Rome, Italy",
+    lat: 41.9028,
+    lng: 12.4964,
+    price: 600000,
+    size: "250 sqm",
+    bedroom: 6,
+    bathroom: 5,
+    garden: true,
+    parking: true,
+    description:
+      "A grand historical house with classic architecture and elegant interiors.",
+  },
+  {
+    name: "Countryside House",
+    image: "https://myport-video-public.s3.us-west-2.amazonaws.com/public-house-image/countryside+house.jpg",
+    location: "Norfolk, UK",
+    lat: 52.6309,
+    lng: 1.2974,
+    price: 250000,
+    size: "130 sqm",
+    bedroom: 3,
+    bathroom: 2,
+    garden: true,
+    parking: true,
+    description:
+      "A peaceful countryside home with stunning views and cozy interiors.",
+  },
+];
 
 const seed = async () => {
-    await prisma.item.createMany({
-        data: ItemData
-    })
-}
+  const runSeed = await prisma.item.createMany({
+    data: mockHouseData,
+  });
+  console.log(runSeed);
+};
+
+seed();

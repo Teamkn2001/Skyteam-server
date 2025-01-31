@@ -1,3 +1,4 @@
+const itemModel = require("../models/ItemModel");
 const userModel = require("../models/userModel");
 const userService = require("../services/sendEmail");
 
@@ -17,5 +18,17 @@ bookingController.getBookings = async (req, res, next) => {
     next(error);
   }
 };
+
+bookingController.getItems = async (req, res , next) => {
+  try {
+    const items = await itemModel.getItems();
+
+    console.log(items)
+    
+    res.json({ items})
+  } catch (error) {
+    next(error);
+  }
+}
 
 module.exports = bookingController;
