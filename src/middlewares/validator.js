@@ -32,14 +32,27 @@ const validateUserForm = Joi.object({
       "date.max": "Cannot book more than 10 days in advance",
       "any.required": "Date is required",
     }),
+    message: Joi.alternatives().try(
+      Joi.string().max(100),
+      Joi.object(),
+      Joi.allow(null)
+    ).messages({
+      "string.max": "Message cannot be longer than 100 characters"
+    })
 });
 
 const validateUserFormSchema = (schema) => (req, res, next) => {
-  const { value, error } = schema.validate(req.body);
+  const { formData } = req.body;
+  
+  const { value, error } = schema.validate(formData, {
+    abortEarly: true,
+    stripUnknown: true,
+  });
+
   if (error) {
     const errMsg = error.details[0].message;
     const err = createError(400, errMsg);
-    console.log("first")
+    console.log("first");
     return next(err);
   }
   req.input = value;

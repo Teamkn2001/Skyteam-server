@@ -1,19 +1,39 @@
 const itemModel = require("../models/ItemModel");
 const userModel = require("../models/userModel");
 const userService = require("../services/sendEmail");
+const createError = require("../utils/create-error");
 
 const bookingController = {};
 
 bookingController.getBookings = async (req, res, next) => {
   try {
+    const { item } = req.body;
     const userData = req.input;
-    console.log(userData);
 
-    const addUser = await userModel.saveUserData(userData);
+    const itemId = +item.id
+    const userDataWithItems = {
+      ...userData, itemId, lineId: null
+    }
 
-    // await userService.sendEmail(userData.email)
+const itemName = item.name
 
-    res.json({ message: "saved data", savedUser: addUser });
+const bookedItem = {
+  bookedDate : new Date(userData.bookingDate).toLocaleDateString('en-GB'),
+  bookedName : itemName
+}
+
+
+    const addUser = await userModel.saveUserData(userDataWithItems);
+    if (!addUser) {
+      return createError(500, "Failed to save user data");
+    }
+
+    const sendEmail = await userService.sendEmail(userData.email, bookedItem);
+    if (!sendEmail) {
+      return createError(500, "Failed to send email");
+    }
+
+    res.json({ message: "booking successful"});
   } catch (error) {
     next(error);
   }
@@ -23,8 +43,10 @@ bookingController.getItems = async (req, res , next) => {
   try {
     const items = await itemModel.getItems();
 
-    console.log(items)
-    
+    if(!items) {
+      return createError(404, 'Items not found')
+    }
+
     res.json({ items})
   } catch (error) {
     next(error);
