@@ -3,7 +3,6 @@ const prisma = require('../config/prisma')
 const userModel = {}
 
 userModel.saveUserData = async (userData) => {
-    console.log("at model",userData)
    
     try {
         const bookingData = {
